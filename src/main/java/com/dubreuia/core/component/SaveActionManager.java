@@ -3,7 +3,6 @@ package com.dubreuia.core.component;
 import com.dubreuia.core.ExecutionMode;
 import com.dubreuia.core.SaveActionFactory;
 import com.dubreuia.core.action.ShortcutAction;
-import com.dubreuia.model.Action;
 import com.dubreuia.model.Storage;
 import com.dubreuia.processors.Processor;
 import com.dubreuia.processors.Processor.ProcessorComparator;
@@ -22,12 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.dubreuia.core.ExecutionMode.batch;
 import static com.dubreuia.core.ExecutionMode.normal;
 import static com.dubreuia.model.Action.activate;
-import static com.dubreuia.utils.PsiFiles.isPsiFileEligible;
 import static java.util.Collections.synchronizedList;
 
 /**
@@ -39,7 +36,7 @@ import static java.util.Collections.synchronizedList;
  * <p>
  * The psi files seems to be shared between projects, so we need to check if the file is physically
  * in that project before reformating, or else the file is formatted twice and intellij will ask to
- * confirm unlocking of non-project file in the other project, see {@link #isPsiFileEligible(Project, PsiFile)}.
+ * confirm unlocking of non-project file in the other project, see {@link PsiFileValidator#isPsiFileEligible(PsiFile)}.
  *
  * @see ShortcutAction
  */
@@ -65,10 +62,7 @@ public class SaveActionManager extends FileDocumentManagerAdapter {
     }
 
     public void processPsiFileIfNecessary(Project project, PsiFile psiFile, ExecutionMode mode) {
-        Set<String> inclusions = getStorage(project).getInclusions();
-        Set<String> exclusions = getStorage(project).getExclusions();
-        boolean noActionIfCompileErrors = getStorage(project).isEnabled(Action.noActionIfCompileErrors);
-        if (isPsiFileEligible(project, psiFile, inclusions, exclusions, noActionIfCompileErrors)) {
+        if (PsiFileValidator.of(project, getStorage(project)).isPsiFileEligible(psiFile)) {
             processPsiFile(project, psiFile, mode);
             commitDocumentAndSaveIfNecessary(project, psiFile, mode);
         }
