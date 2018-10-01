@@ -19,9 +19,6 @@ public class SaveActionFactory {
     public static List<SaveActionManager> getManagers() {
         List<SaveActionManager> managers = new ArrayList<>();
         managers.add(new SaveActionManager());
-        if (JAVA_AVAILABLE) {
-            managers.add(new com.dubreuia.core.component.java.SaveActionManager());
-        }
         return managers;
     }
 
