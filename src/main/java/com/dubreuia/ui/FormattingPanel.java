@@ -26,10 +26,7 @@ class FormattingPanel {
         JPanel panel = new JPanel();
         panel.setBorder(IdeBorderFactory.createTitledBorder(TEXT_TITLE_ACTIONS));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(checkboxes.get(organizeImports));
         panel.add(checkboxes.get(reformat));
-        panel.add(checkboxes.get(reformatChangedCode));
-        panel.add(checkboxes.get(rearrange));
         panel.add(Box.createHorizontalGlue());
         panel.setMinimumSize(new Dimension(Short.MAX_VALUE, 0));
         return panel;

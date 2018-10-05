@@ -15,9 +15,7 @@ public enum ProcessorFactory {
 
     public List<Processor> getSaveActionsProcessors(Project project, PsiFile psiFile, Storage storage) {
         List<Processor> processors = new ArrayList<>();
-        processors.add(new OptimizeImportsProcessor(project, psiFile, storage));
         processors.add(new ReformatCodeProcessor(project, psiFile, storage));
-        processors.add(new RearrangeCodeProcessor(project, psiFile, storage));
         return processors;
     }
 
